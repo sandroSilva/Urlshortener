@@ -1,0 +1,56 @@
+<html>
+<head>
+<script type="text/javascript">
+function encurtar() 
+	{
+		//Criação de uma variável onde será colocada a URL original;
+		var urlOriginal=document.getElementById("url").value;
+		//Chamada da API para denominação e inserção da URL Original;
+		var request = gapi.client.urlshortener.url.insert(
+			{
+				'resource': 
+		  			{
+						'longUrl': urlOriginal
+					}
+			});
+		//Execução da função cujo retorno será a URL encurtada;	
+		request.execute(function(response) 
+			{
+				//Criação de uma variável onde será colocada a impressão da URL original;
+				var sPrint ="<b>URL original:</b>"+urlOriginal+"<br>";
+				//Inserção na variável da URL encurtada recebida como "response.id";
+				sPrint +="<b>URL encurtada:</b> <a href='"+response.id+"' target='_blank'>"+response.id+"</a><br>";
+				//Impressão da variável na div de id "output" do HTML;
+				document.getElementById("output").innerHTML = sPrint;
+			});
+	 }
+
+function load()
+	{
+		//Entrada da API KEY;
+		//Gere sua API Key em: https://code.google.com/apis/console/
+		gapi.client.setApiKey('SUA API KEY');
+		//Carrega a API "urlshortener", Versão "v1";
+		gapi.client.load('urlshortener', 'v1');
+	}
+</script>
+</head>
+<body>
+    <h1>Teste - Google URL Shortener API</h1>
+    <div>
+        <form>
+            <label>Cole sua URL: </label>
+			<!-- Input para entrada da URL original; -->
+            <input type="text" id="url" name="url" size=70 value="cole aqui sua URL" /> <br/>
+			<!-- Botão para a chamada da função "encurtar"; -->
+            <input type="button" value="Encurte a URL" onclick="encurtar();" /> 
+        </form>
+    </div>
+    <br/>
+	<!-- Na div output teremos o retorno da URL encurtada; -->
+    <div id="output"></div>
+	<!-- Chamada do Javascript da API no final da página e no onload já entrar com a API Key; -->
+    <script src="https://apis.google.com/js/client.js?onload=load"></script>
+</body>
+</html>
+
